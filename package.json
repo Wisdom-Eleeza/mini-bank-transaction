@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.ts"
+   "start": "node dist/server.js",
+   "server": "nodemon dist/server.js",
+   "build": "ts-node src/server.ts",
+   "dev": "nodemon --exec ts-node src/server.ts",
+   "watch": "tsc -w"
   },
   "repository": {
     "type": "git",
@@ -18,7 +22,12 @@
   },
   "homepage": "https://github.com/Wisdom-Eleeza/mini-bank-transaction#readme",
   "dependencies": {
-    "@types/node": "^20.4.9"
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.4.9",
+    "express": "^4.18.2",
+    "pg": "^8.11.2",
+    "ts-node": "^10.9.1",
+    "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
