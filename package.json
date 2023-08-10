@@ -1,0 +1,26 @@
+{
+  "name": "mini-bank-transaction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wisdom-Eleeza/mini-bank-transaction.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wisdom-Eleeza/mini-bank-transaction/issues"
+  },
+  "homepage": "https://github.com/Wisdom-Eleeza/mini-bank-transaction#readme",
+  "dependencies": {
+    "@types/node": "^20.4.9"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
