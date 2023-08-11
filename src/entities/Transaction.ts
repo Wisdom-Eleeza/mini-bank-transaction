@@ -4,14 +4,15 @@ import {
   Column,
   ManyToOne,
   BaseEntity,
+  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Customer } from '../entities/Customer'
+import { Customer } from "../entities/Customer";
 
 export enum TransactionType {
-    DEPOSIT = 'deposit',
-    WITHDRAW = 'withdraw'
+  DEPOSIT = "deposit",
+  WITHDRAW = "withdraw",
 }
 
 @Entity()
@@ -19,10 +20,10 @@ export class Transaction extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: 'enum', enum: TransactionType })
+  @Column({ type: "enum", enum: TransactionType })
   type!: string;
 
-  @Column({ type: 'numeric' })
+  @Column({ type: "numeric" })
   amount!: number;
 
   @CreateDateColumn()
@@ -31,8 +32,11 @@ export class Transaction extends BaseEntity {
   @UpdateDateColumn()
   updated_at!: Date;
 
-  @ManyToOne(() => Customer, customer => customer.transaction)
-  customer!: Customer
+  @ManyToOne(() => Customer, (customer) => customer.transaction, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({name: 'customer_id'})
+  customer!: Customer;
 }
 
 // Relationships (one - many and many - one relationship)

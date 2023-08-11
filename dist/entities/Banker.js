@@ -11,36 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Banker = void 0;
 const typeorm_1 = require("typeorm");
-let Banker = exports.Banker = class Banker extends typeorm_1.BaseEntity {
+const Personal_1 = require("../utils/Personal");
+const Customer_1 = require("./Customer");
+let Banker = exports.Banker = class Banker extends Personal_1.Personal {
 };
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], Banker.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], Banker.prototype, "username", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], Banker.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Banker.prototype, "password", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Banker.prototype, "firstname", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Banker.prototype, "lastname", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: "numeric" }),
-    __metadata("design:type", Number)
-], Banker.prototype, "balance", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "simple-json" }),
     __metadata("design:type", Object)
@@ -49,6 +23,23 @@ __decorate([
     (0, typeorm_1.Column)({ unique: true, length: 10 }),
     __metadata("design:type", String)
 ], Banker.prototype, "employee_number", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Customer_1.Customer, customer => customer.bankers, {
+        cascade: true,
+    }),
+    (0, typeorm_1.JoinTable)({
+        name: 'banker_to_customer',
+        joinColumn: {
+            name: 'banker_id',
+            referencedColumnName: 'id', // Referenced column in the Banker entity
+        },
+        inverseJoinColumn: {
+            name: 'customer_id',
+            referencedColumnName: 'id', // Referenced column in the Customer entity
+        },
+    }),
+    __metadata("design:type", Array)
+], Banker.prototype, "customers", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

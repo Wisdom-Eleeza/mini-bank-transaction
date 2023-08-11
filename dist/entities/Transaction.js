@@ -24,11 +24,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Transaction.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: TransactionType }),
+    (0, typeorm_1.Column)({ type: "enum", enum: TransactionType }),
     __metadata("design:type", String)
 ], Transaction.prototype, "type", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'numeric' }),
+    (0, typeorm_1.Column)({ type: "numeric" }),
     __metadata("design:type", Number)
 ], Transaction.prototype, "amount", void 0);
 __decorate([
@@ -40,7 +40,10 @@ __decorate([
     __metadata("design:type", Date)
 ], Transaction.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Customer_1.Customer, customer => customer.transaction),
+    (0, typeorm_1.ManyToOne)(() => Customer_1.Customer, (customer) => customer.transaction, {
+        onDelete: "CASCADE",
+    }),
+    (0, typeorm_1.JoinColumn)({ name: 'customer_id' }),
     __metadata("design:type", Customer_1.Customer)
 ], Transaction.prototype, "customer", void 0);
 exports.Transaction = Transaction = __decorate([

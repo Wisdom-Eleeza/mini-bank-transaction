@@ -12,32 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Customer = void 0;
 const typeorm_1 = require("typeorm");
 const Transaction_1 = require("./Transaction");
-let Customer = exports.Customer = class Customer extends typeorm_1.BaseEntity {
+const Personal_1 = require("../utils/Personal");
+const Banker_1 = require("./Banker");
+let Customer = exports.Customer = class Customer extends Personal_1.Personal {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.Column)({ type: "numeric" }),
     __metadata("design:type", Number)
-], Customer.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], Customer.prototype, "username", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], Customer.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Customer.prototype, "password", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Customer.prototype, "firstname", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Customer.prototype, "lastname", void 0);
+], Customer.prototype, "balance", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "simple-json" }),
     __metadata("design:type", Object)
@@ -51,9 +33,16 @@ __decorate([
     __metadata("design:type", Array)
 ], Customer.prototype, "family_member", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Transaction_1.Transaction, transaction => transaction.customer),
+    (0, typeorm_1.OneToMany)(() => Transaction_1.Transaction, (transaction) => transaction.customer, {
+        onDelete: "CASCADE",
+    }),
+    (0, typeorm_1.JoinColumn)({ name: "customer_transactions" }),
     __metadata("design:type", Array)
 ], Customer.prototype, "transaction", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Banker_1.Banker, (banker) => banker.customers),
+    __metadata("design:type", Array)
+], Customer.prototype, "bankers", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
@@ -65,3 +54,21 @@ __decorate([
 exports.Customer = Customer = __decorate([
     (0, typeorm_1.Entity)()
 ], Customer);
+// Relationships (one - many and many - one relationship)
+// one customer can have many transaction and one transaction belongs to a single customer
+// Customer - Transaction
+// 1        -   1
+// 1        -   2
+// 2        -   1
+// 2        -   2
+// Relationships between customer and banker
+/**
+ * The relationship between customer and banker entity could be many-to-many relationship.
+ * This means multiple customers can be associated with multiple bankers and
+ * multiple bankers can be associated with multiple customers
+ */
+// Customer - Banker
+// 1        - 1
+// 1        - 2
+// 2        - 1
+// 2        - 2

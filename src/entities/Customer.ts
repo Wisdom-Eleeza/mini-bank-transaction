@@ -1,33 +1,20 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   OneToMany,
-  BaseEntity,
+  ManyToMany,
+  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { Transaction } from "./Transaction";
+import { Personal } from "../utils/Personal";
+import { Banker } from "./Banker";
 
 @Entity()
-export class Customer extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
-  @Column({ unique: true })
-  username!: string;
-
-  @Column({ unique: true })
-  email!: string;
-
-  @Column()
-  password!: string;
-
-  @Column()
-  firstname!: string;
-
-  @Column()
-  lastname!: string;
+export class Customer extends Personal {
+  @Column({ type: "numeric" })
+  balance!: number;
 
   @Column({ type: "simple-json" })
   info!: {
@@ -46,8 +33,17 @@ export class Customer extends BaseEntity {
   @Column({ type: "simple-array" })
   family_member!: string[];
 
-  @OneToMany(() => Transaction, transaction => transaction.customer)
-  transaction!: Transaction[]
+  // when a customer record is deleted, all associated transactions related to that customer
+  // will also be automatically deleted(onDelete: "CASCADE"). This ensures data consistency and prevents
+  // orphaned records. Using this must be handled with caution
+  @OneToMany(() => Transaction, (transaction) => transaction.customer, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "customer_transactions" })
+  transaction!: Transaction[];
+
+  @ManyToMany(() => Banker, (banker) => banker.customers)
+  bankers!: Banker[];
 
   @CreateDateColumn()
   created_at!: Date;
@@ -55,3 +51,23 @@ export class Customer extends BaseEntity {
   @UpdateDateColumn()
   updated_at!: Date;
 }
+
+// Relationships (one - many and many - one relationship)
+// one customer can have many transaction and one transaction belongs to a single customer
+// Customer - Transaction
+// 1        -   1
+// 1        -   2
+// 2        -   1
+// 2        -   2
+
+// Relationships between customer and banker
+/**
+ * The relationship between customer and banker entity could be many-to-many relationship.
+ * This means multiple customers can be associated with multiple bankers and
+ * multiple bankers can be associated with multiple customers
+ */
+// Customer - Banker
+// 1        - 1
+// 1        - 2
+// 2        - 1
+// 2        - 2
