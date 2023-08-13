@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const typeorm_1 = require("typeorm");
 const dotenv_1 = __importDefault(require("dotenv"));
-const path_1 = require("path"); // Import the 'join' function from the 'path' module
+const path_1 = require("path");
 const Customer_1 = __importDefault(require("./router/Customer"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -31,7 +31,7 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
             password: process.env.DATABASE_PASSWORD,
             database: process.env.DATABASE_NAME,
             synchronize: true,
-            entities: [(0, path_1.join)(__dirname, "entities", "*{.js,.ts}")], // Use 'join' to construct the correct path
+            entities: [(0, path_1.join)(__dirname, "models", "*.js"), (0, path_1.join)(__dirname, "models", "*.ts")],
         });
         console.log("Postgres Database Connected Successfully...");
     }
@@ -40,7 +40,7 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error("Unable to connect to the PostgreSQL database");
     }
     // routes middleware
-    app.use('/customer', Customer_1.default);
+    app.use('/api/v1', Customer_1.default);
     app.listen(port, () => console.log(`Server started on: http://localhost:${port}`));
 });
 startServer();

@@ -1,7 +1,7 @@
 import express from "express";
 import { createConnection } from "typeorm";
 import dotenv from 'dotenv'
-import { join } from "path"; // Import the 'join' function from the 'path' module
+import { join } from "path";
 
 import CustomerRoutes from "./router/Customer";
 
@@ -20,7 +20,7 @@ const startServer = async () => {
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       synchronize: true,
-      entities: [join(__dirname, "entities", "*{.js,.ts}")], // Use 'join' to construct the correct path
+      entities: [join(__dirname, "models", "*.js"), join(__dirname, "models", "*.ts")],
     });
     console.log("Postgres Database Connected Successfully...");
   } catch (error) {
@@ -29,7 +29,7 @@ const startServer = async () => {
   }
 
   // routes middleware
-  app.use('/customer', CustomerRoutes)
+  app.use('/api/v1', CustomerRoutes)
 
   app.listen(port, () =>
     console.log(`Server started on: http://localhost:${port}`)

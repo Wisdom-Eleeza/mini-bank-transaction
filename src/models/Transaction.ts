@@ -8,7 +8,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Customer } from "../entities/Customer";
+import { Customer } from "./Customer";
 
 export enum TransactionType {
   DEPOSIT = "deposit",
