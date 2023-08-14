@@ -17,6 +17,7 @@ const typeorm_1 = require("typeorm");
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = require("path");
 const Customer_1 = __importDefault(require("./router/Customer"));
+const postCustomer_1 = __importDefault(require("./router/postCustomer"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;
@@ -39,8 +40,11 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
         console.error('Error connecting to PostgreSQL database:', error);
         throw new Error("Unable to connect to the PostgreSQL database");
     }
+    // in-built middleware
+    app.use(express_1.default.json());
     // routes middleware
     app.use('/api/v1', Customer_1.default);
+    app.use('/api/v1', postCustomer_1.default);
     app.listen(port, () => console.log(`Server started on: http://localhost:${port}`));
 });
 startServer();

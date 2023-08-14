@@ -13,16 +13,16 @@ import { Banker } from "./Banker";
 
 @Entity()
 export class Customer extends Personal {
-  @Column({ type: "numeric" })
+  @Column({ type: "numeric", default: 0})
   balance!: number;
 
-  @Column({ type: "simple-json" })
+  @Column({ type: "simple-json", nullable: true })
   info!: {
     age: number;
     hair_color: string;
   };
 
-  @Column({ type: "simple-json" })
+  @Column({ type: "simple-json", nullable: true })
   address!: {
     address: string;
     city: string;
@@ -30,7 +30,7 @@ export class Customer extends Personal {
     postcode: number;
   };
 
-  @Column({ type: "simple-array" })
+  @Column({ type: "simple-array", default:[] })
   family_member!: string[];
 
   // when a customer record is deleted, all associated transactions related to that customer

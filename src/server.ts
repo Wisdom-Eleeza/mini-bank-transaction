@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { join } from "path";
 
 import CustomerRoutes from "./router/Customer";
+import createCustomerRouter from "./router/postCustomer"
 
 dotenv.config()
 const app = express();
@@ -27,9 +28,12 @@ const startServer = async () => {
     console.error('Error connecting to PostgreSQL database:', error);
     throw new Error("Unable to connect to the PostgreSQL database");
   }
+  // in-built middleware
+  app.use(express.json())
 
   // routes middleware
   app.use('/api/v1', CustomerRoutes)
+  app.use('/api/v1', createCustomerRouter)
 
   app.listen(port, () =>
     console.log(`Server started on: http://localhost:${port}`)

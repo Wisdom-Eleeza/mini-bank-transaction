@@ -26,7 +26,7 @@ __decorate([
     __metadata("design:type", String)
 ], Personal.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: "" }),
     __metadata("design:type", String)
 ], Personal.prototype, "password", void 0);
 __decorate([
@@ -37,6 +37,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Personal.prototype, "lastname", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true, length: 15 }),
+    __metadata("design:type", String)
+], Personal.prototype, "card_number", void 0);
 exports.Personal = Personal = __decorate([
     (0, typeorm_1.Entity)()
 ], Personal);
