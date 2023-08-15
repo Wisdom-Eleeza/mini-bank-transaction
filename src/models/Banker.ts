@@ -26,7 +26,7 @@ import {
       cascade: true,
     })
     @JoinTable({
-      name: 'banker_to_customer', // Corrected name with underscores
+      name: 'banker_to_customer',
       joinColumn: {
         name: 'banker_id', // Name of the column in the join table
         referencedColumnName: 'id', // Referenced column in the Banker entity

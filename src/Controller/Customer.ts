@@ -1,16 +1,17 @@
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import { getRepository } from 'typeorm'
-import { Customer as CustomerModel } from "../models/Customer"; // Rename the import
+import { Customer } from "../models/Customer";
 
-const Customer = async (req: Request, res: Response) => {
+const Customers = async (req: Request, res: Response) => {
   try {
-    const customerRepo = getRepository(CustomerModel); // Use CustomerModel here
+    const customerRepo = getRepository(Customer);
     const customers = await customerRepo.find({});
+    // console.log("object", customers)
     return res.status(200).json(customers);
   } catch (error) {
     console.error("Something went wrong", error);
-    return res.status(500).json({ error: "An error occurred" }); // Sending a response instead of throwing an error
+    return res.status(500).json({ error: "An error occurred" });
   }
 };
 
-export default Customer;
+export default Customers;

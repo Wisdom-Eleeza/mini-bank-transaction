@@ -14,10 +14,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const typeorm_1 = require("typeorm");
+const cors = require('cors');
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = require("path");
 const Customer_1 = __importDefault(require("./router/Customer"));
 const postCustomer_1 = __importDefault(require("./router/postCustomer"));
+const post_bankers_1 = __importDefault(require("./router/post_bankers"));
+const get_bankers_1 = __importDefault(require("./router/get_bankers"));
+// import getTransaction from './router/get_all-Transactions'
+const postTransactions_1 = __importDefault(require("./router/postTransactions"));
+const errorHandler_1 = __importDefault(require("./middleware/errorHandler"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;
@@ -33,6 +39,7 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
             database: process.env.DATABASE_NAME,
             synchronize: true,
             entities: [(0, path_1.join)(__dirname, "models", "*.js"), (0, path_1.join)(__dirname, "models", "*.ts")],
+            // entities: [Customer]
         });
         console.log("Postgres Database Connected Successfully...");
     }
@@ -41,10 +48,17 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error("Unable to connect to the PostgreSQL database");
     }
     // in-built middleware
+    app.use(cors());
     app.use(express_1.default.json());
     // routes middleware
     app.use('/api/v1', Customer_1.default);
     app.use('/api/v1', postCustomer_1.default);
+    app.use('/api/v1', post_bankers_1.default);
+    app.use('/api/v1', get_bankers_1.default);
+    // app.use('/api/v1', getTransaction)
+    app.use('/api/v1/customer', postTransactions_1.default);
+    // error handling middleware
+    app.use(errorHandler_1.default);
     app.listen(port, () => console.log(`Server started on: http://localhost:${port}`));
 });
 startServer();

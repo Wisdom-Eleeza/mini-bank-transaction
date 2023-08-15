@@ -1,12 +1,11 @@
-import express, { Request, Response } from "express";
-import { Customer as CustomerModel } from "../models/Customer";
-
+import { Request, Response } from "express";
+import { Customer } from "../models/Customer";
+console.log("Customer", Customer)
 const CreateCustomer = async (req: Request, res: Response) => {
   try {
     const { username, email, password, firstname, lastname, card_number } = req.body;
-    console.log("Request Body:", req.body); // Log the request body
-
-    const customer = CustomerModel.create({
+    console.log("Request Body:", req.body);
+    const customer = Customer.create({
       username,
       email,
       password,
@@ -16,11 +15,10 @@ const CreateCustomer = async (req: Request, res: Response) => {
     });
 
     await customer.save();
-    console.log("Saved Customer:", customer); // Log the saved customer
-
+    
     return res.status(200).json(customer);
   } catch (error) {
-    console.error("Error creating customer:", error); // Log the error
+    console.error("Error creating customer:", error);
     return res.status(500).json({ error: "An error occurred" });
   }
 };
